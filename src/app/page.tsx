@@ -344,7 +344,7 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Queres saber mais ou ter uma proposta personalizada?</h2>
           <p className="mb-6 text-lg text-moty-gray">Deixa o teu contacto e um agente MOTY entrará em contacto contigo para esclarecer dúvidas ou apresentar a melhor solução para ti. Sem compromisso!</p>
           <a
-            href="#contacto" // Placeholder para âncora ou futura integração
+            href="#contacto"
             className="inline-block px-8 py-4 bg-moty-red text-white rounded-full font-semibold text-lg shadow-lg hover:bg-red-700 transition-colors"
           >
             Quero ser contactado
@@ -352,6 +352,69 @@ export default function Home() {
           <div className="mt-4 text-moty-gray text-sm flex justify-center items-center gap-2">
             <svg className="w-5 h-5 inline-block text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
             Resposta rápida e personalizada. Sem compromisso.
+          </div>
+        </div>
+      </section>
+      
+      {/* Bloco Comunidade / Redes Sociais */}
+      <section className="py-16 bg-moty-light-gray">
+        <div className="container-custom mx-auto max-w-4xl text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-moty-black">Junta-te à Comunidade MOTY</h2>
+          <p className="text-moty-gray text-lg mb-8">Partilha experiências, descobre rotas, participa em eventos e fica a par das novidades do mundo das motas. Segue-nos e faz parte da maior comunidade de motociclistas digitais em Portugal!</p>
+          <div className="flex flex-wrap justify-center gap-8">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="bg-white rounded-full shadow p-4 flex flex-col items-center w-32 hover:bg-moty-red/10 transition">
+              {/* Facebook SVG */}
+              <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8 mb-2 text-[#1877F3]" aria-hidden="true">
+                <path d="M22.675 0h-21.35C.6 0 0 .6 0 1.326v21.348C0 23.4.6 24 1.326 24H12.82v-9.294H9.692V11.01h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.696h-3.12V24h6.116C23.4 24 24 23.4 24 22.674V1.326C24 .6 23.4 0 22.675 0"/>
+              </svg>
+              <span className="font-semibold text-moty-black">Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="bg-white rounded-full shadow p-4 flex flex-col items-center w-32 hover:bg-moty-red/10 transition">
+              {/* Instagram SVG */}
+              <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8 mb-2 text-[#E4405F]" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.346.446-.519.149-.173.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.501-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479s1.064 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.356.709.243 1.262.388 1.694.497.712.181 1.36.155 1.872.094.571-.067 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347zM12 2.163c-5.468 0-9.837 4.369-9.837 9.837 0 1.737.453 3.44 1.312 4.938L2 22l5.154-1.352a9.816 9.816 0 0 0 4.846 1.235h.004c5.467 0 9.836-4.369 9.836-9.837 0-2.625-1.023-5.093-2.877-6.948C17.093 3.186 14.625 2.163 12 2.163z"/>
+              </svg>
+              <span className="font-semibold text-moty-black">Instagram</span>
+            </a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" className="bg-white rounded-full shadow p-4 flex flex-col items-center w-32 hover:bg-moty-red/10 transition">
+              {/* YouTube SVG */}
+              <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8 mb-2 text-[#FF0000]" aria-hidden="true">
+                <path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.44 3.5 12 3.5 12 3.5s-7.44 0-9.391.569A2.994 2.994 0 0 0 .502 6.186c-.569 1.951-.569 6.014-.569 6.014s0 4.063.569 6.014a2.994 2.994 0 0 0 2.107 2.117C4.56 20.5 12 20.5 12 20.5s7.44 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117c.569-1.951.569-6.014.569-6.014s0-4.063-.569-6.014zM9.75 15.02V8.98l6.5 3.02-6.5 3.02z"/>
+              </svg>
+              <span className="font-semibold text-moty-black">YouTube</span>
+            </a>
+            <a href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer" className="bg-white rounded-full shadow p-4 flex flex-col items-center w-32 hover:bg-moty-red/10 transition">
+              {/* WhatsApp SVG */}
+              <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8 mb-2 text-[#25D366]" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.029-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.346.446-.519.149-.173.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.501-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479s1.064 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.356.709.243 1.262.388 1.694.497.712.181 1.36.155 1.872.094.571-.067 1.758-.719 2.006-1.413.248-.694.248-1.288.173-1.413-.074-.124-.272-.198-.57-.347zM12 2.163c-5.468 0-9.837 4.369-9.837 9.837 0 1.737.453 3.44 1.312 4.938L2 22l5.154-1.352a9.816 9.816 0 0 0 4.846 1.235h.004c5.467 0 9.836-4.369 9.836-9.837 0-2.625-1.023-5.093-2.877-6.948C17.093 3.186 14.625 2.163 12 2.163z"/>
+              </svg>
+              <span className="font-semibold text-moty-black">WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      {/* Bloco de Parceiros / Confiança */}
+      <section className="py-16 bg-white">
+        <div className="container-custom mx-auto max-w-5xl">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2 text-moty-black">Parceiros &amp; Confiança</h2>
+            <p className="text-moty-gray text-lg">A MOTY trabalha com entidades de referência para garantir a máxima proteção e confiança aos motociclistas.</p>
+          </div>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+            {/* Exemplos de logos de parceiros (usar imagens reais quando disponíveis) */}
+            <div className="bg-moty-light-gray rounded-xl shadow p-4 flex items-center justify-center w-40 h-20">
+              <img src="/partners/logo1.svg" alt="Parceiro 1" className="max-h-12 mx-auto" />
+            </div>
+            <div className="bg-moty-light-gray rounded-xl shadow p-4 flex items-center justify-center w-40 h-20">
+              <img src="/partners/logo2.svg" alt="Parceiro 2" className="max-h-12 mx-auto" />
+            </div>
+            <div className="bg-moty-light-gray rounded-xl shadow p-4 flex items-center justify-center w-40 h-20">
+              <img src="/partners/logo3.svg" alt="Parceiro 3" className="max-h-12 mx-auto" />
+            </div>
+            <div className="bg-moty-light-gray rounded-xl shadow p-4 flex items-center justify-center w-40 h-20">
+              <img src="/partners/logo4.svg" alt="Parceiro 4" className="max-h-12 mx-auto" />
+            </div>
           </div>
         </div>
       </section>
