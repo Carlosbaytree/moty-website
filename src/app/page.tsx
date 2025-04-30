@@ -117,33 +117,44 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Bloco CTA Simulador */}
+      {/* Bloco CTA Simulador - layout anterior restaurado com foto */}
       <section className="py-16 bg-moty-light-gray">
-        <div className="container-custom mx-auto flex flex-col md:flex-row items-center justify-center gap-8">
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full md:w-1/2 relative overflow-hidden">
-            <h2 className="text-2xl font-bold mb-4 z-10 relative">Simule o Seu Seguro</h2>
-            <p className="mb-4 text-moty-gray z-10 relative">
-              Obtenha uma cotação personalizada para o seu seguro de mota em menos de 2 minutos. Sem compromisso e com as melhores coberturas do mercado.
-            </p>
-            <ul className="mb-6 space-y-2 text-green-600 font-medium z-10 relative">
-              <li>✅ Processo 100% digital</li>
-              <li>✅ Coberturas personalizáveis</li>
-              <li>✅ Assistência 24/7 incluída</li>
-            </ul>
-            <Link href="/simulador" className="btn-primary w-full py-3 text-lg z-10 relative">
-              Simular Agora
-            </Link>
-            {/* Imagem de fundo com filtro e opacidade */}
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/simulador-bg.jpg"
-                alt="Motociclista atravessando rio"
-                fill
-                style={{ objectFit: 'cover', filter: 'blur(2px) grayscale(0.4)', opacity: 0.25 }}
-                className="rounded-xl"
-                priority
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30 rounded-xl"></div>
+        <div className="container-custom mx-auto">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                <h2 className="text-3xl font-bold mb-4">Simule o Seu Seguro</h2>
+                <p className="text-moty-gray mb-6">
+                  Obtenha uma cotação personalizada para o seu seguro de mota em menos de 2 minutos. Sem compromisso e com as melhores coberturas do mercado.
+                </p>
+                <ul className="mb-8 space-y-2">
+                  <li className="flex items-center">
+                    <span className="bg-green-100 text-green-800 p-1 rounded-full mr-2">✓</span>
+                    Processo 100% digital
+                  </li>
+                  <li className="flex items-center">
+                    <span className="bg-green-100 text-green-800 p-1 rounded-full mr-2">✓</span>
+                    Coberturas personalizáveis
+                  </li>
+                  <li className="flex items-center">
+                    <span className="bg-green-100 text-green-800 p-1 rounded-full mr-2">✓</span>
+                    Assistência 24/7 incluída
+                  </li>
+                </ul>
+                <Link href="/simulador" className="btn-primary text-center py-3 w-full md:w-auto">
+                  Simular Agora
+                </Link>
+              </div>
+              <div className="w-full md:w-1/2 relative min-h-[300px]">
+                <Image
+                  src="/simulador-bg.jpg"
+                  alt="Motociclista atravessando rio"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  className="brightness-[0.85]"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
