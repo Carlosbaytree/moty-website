@@ -1,3 +1,5 @@
+"use client";
+
 import Hero from '@/components/Hero';
 import Link from 'next/link';
 import Image from 'next/image';
