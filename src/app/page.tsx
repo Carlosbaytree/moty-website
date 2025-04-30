@@ -150,10 +150,12 @@ export default function Home() {
                   src="/simulador-bg.jpg"
                   alt="Motociclista atravessando rio"
                   fill
-                  style={{ objectFit: 'cover' }}
-                  className="brightness-[0.85]"
+                  style={{ objectFit: 'cover', filter: 'grayscale(0.8)', opacity: 0.45 }}
+                  className=""
                   priority
                 />
+                {/* Overlay cinza avermelhado */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(225,29,72,0.15) 0%, rgba(17,24,39,0.25) 100%)' }} />
               </div>
             </div>
           </div>
