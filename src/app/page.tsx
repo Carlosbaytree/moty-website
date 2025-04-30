@@ -339,17 +339,17 @@ export default function Home() {
       </section>
       
       {/* CTA Final: Quero ser contactado */}
-      <section className="py-16 bg-moty-black text-white">
+      <section className="py-16 bg-gradient-to-br from-moty-gray via-white to-moty-light-gray text-moty-black">
         <div className="container-custom mx-auto max-w-3xl text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Queres saber mais ou ter uma proposta personalizada?</h2>
-          <p className="mb-6 text-lg text-moty-gray-light">Deixa o teu contacto e um agente MOTY entrará em contacto contigo para esclarecer dúvidas ou apresentar a melhor solução para ti. Sem compromisso!</p>
+          <p className="mb-6 text-lg text-moty-gray">Deixa o teu contacto e um agente MOTY entrará em contacto contigo para esclarecer dúvidas ou apresentar a melhor solução para ti. Sem compromisso!</p>
           <a
             href="#contacto" // Placeholder para âncora ou futura integração
             className="inline-block px-8 py-4 bg-moty-red text-white rounded-full font-semibold text-lg shadow-lg hover:bg-red-700 transition-colors"
           >
             Quero ser contactado
           </a>
-          <div className="mt-4 text-moty-gray-light text-sm flex justify-center items-center gap-2">
+          <div className="mt-4 text-moty-gray text-sm flex justify-center items-center gap-2">
             <svg className="w-5 h-5 inline-block text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
             Resposta rápida e personalizada. Sem compromisso.
           </div>
