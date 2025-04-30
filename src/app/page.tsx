@@ -19,23 +19,24 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Serviço 1 */}
-            <div className="card hover:shadow-lg transition-shadow">
+            {/* Serviço 1 - Seguro Digital (Destaque) */}
+            <div className="card hover:shadow-2xl border-2 border-moty-red bg-moty-red/5 transition-shadow scale-105">
               <div className="flex flex-col items-center text-center">
-                <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
+                <div className="bg-moty-red bg-opacity-20 p-4 rounded-full mb-4">
                   <FiShield className="h-8 w-8 text-moty-red" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Seguro Digital</h3>
                 <p className="text-moty-gray">
                   Contrate o seu seguro de mota 100% online, de forma simples e rápida, com coberturas personalizadas.
                 </p>
-                <Link href="/seguros" className="mt-4 text-moty-red font-medium hover:underline">
-                  Saber mais
+                <Link href="/simulador" className="btn-primary mt-4 w-full">
+                  Simular Seguro
                 </Link>
+                <span className="block text-xs text-moty-gray mt-1">Rápido, grátis e sem compromisso.</span>
               </div>
             </div>
             
-            {/* Serviço 2 */}
+            {/* Serviço 2 - Assistência Inteligente */}
             <div className="card hover:shadow-lg transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
@@ -45,13 +46,14 @@ export default function Home() {
                 <p className="text-moty-gray">
                   Localize oficinas, hospitais e serviços de emergência em tempo real, onde quer que esteja.
                 </p>
-                <Link href="/assistencia" className="mt-4 text-moty-red font-medium hover:underline">
+                <Link href="/assistencia" className="btn-outline mt-4 w-full">
                   Saber mais
                 </Link>
+                <span className="block text-xs text-moty-gray mt-1">Encontre ajuda em segundos, onde estiver.</span>
               </div>
             </div>
             
-            {/* Serviço 3 */}
+            {/* Serviço 3 - Comunidade Ativa */}
             <div className="card hover:shadow-lg transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
@@ -61,13 +63,14 @@ export default function Home() {
                 <p className="text-moty-gray">
                   Partilhe rotas, participe em eventos e conecte-se com outros motociclistas da comunidade MOTY.
                 </p>
-                <Link href="/comunidade" className="mt-4 text-moty-red font-medium hover:underline">
-                  Saber mais
+                <Link href="/comunidade" className="btn-outline mt-4 w-full">
+                  Explorar Comunidade
                 </Link>
+                <span className="block text-xs text-moty-gray mt-1">Partilhe rotas, participe em eventos e faça amigos.</span>
               </div>
             </div>
             
-            {/* Serviço 4 */}
+            {/* Serviço 4 - Emergência em Estrada */}
             <div className="card hover:shadow-lg transition-shadow">
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
@@ -77,9 +80,10 @@ export default function Home() {
                 <p className="text-moty-gray">
                   Assistente inteligente que o ajuda em caso de acidente, chamando emergências e preenchendo formulários.
                 </p>
-                <Link href="/emergencia" className="mt-4 text-moty-red font-medium hover:underline">
-                  Saber mais
+                <Link href="/emergencia" className="btn-outline mt-4 w-full">
+                  Como funciona
                 </Link>
+                <span className="block text-xs text-moty-gray mt-1">Assistência digital imediata em caso de acidente.</span>
               </div>
             </div>
           </div>
