@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --moty-red: #E11D48;
+  --moty-black: #111827;
+  --moty-gray: #6B7280;
+  --moty-light-gray: #F9FAFB;
+}
+
+@layer components {
+  .container-custom {
+    @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+  
+  .step-indicator {
+    position: relative;
+    font-weight: 500;
+    color: #9CA3AF;
+    transition: color 0.3s;
+  }
+  
+  .step-indicator.active {
+    color: #111827;
+    font-weight: 600;
+  }
+  
+  .step-indicator::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    background-color: #E11D48;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  
+  .step-indicator.active::before {
+    width: 8px;
+    height: 8px;
+    left: -16px;
+  }
+  
+  .btn-primary {
+    @apply bg-[#E11D48] text-white rounded-md font-medium transition-all duration-200 hover:bg-[#C01441];
+  }
+  
+  .btn-outline-primary {
+    @apply bg-transparent text-[#E11D48] border border-[#E11D48] rounded-md font-medium transition-all duration-200 hover:bg-[#FEF2F2];
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md;
+  }
+}
+
+/* Estilos específicos para o simulador */
+.form-control {
+  @apply w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#E11D48]/50;
+}
+
+.form-control.error {
+  @apply border-red-500 bg-red-50;
+}
+
+.form-label {
+  @apply block text-sm font-medium mb-1 text-gray-700;
+}
+
+.form-error {
+  @apply mt-1 text-sm text-red-600;
+}

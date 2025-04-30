@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 245, 245, 245;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer base {
+  h1 {
+    @apply text-4xl font-bold mb-4;
+  }
+  h2 {
+    @apply text-3xl font-bold mb-3;
+  }
+  h3 {
+    @apply text-2xl font-semibold mb-2;
+  }
+  h4 {
+    @apply text-xl font-semibold mb-2;
+  }
+  p {
+    @apply mb-4;
+  }
+  a {
+    @apply text-moty-red hover:text-moty-black transition-colors duration-300;
+  }
+  button {
+    @apply px-4 py-2 rounded-md transition-all duration-300;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-moty-red text-white hover:bg-red-700 font-medium;
+  }
+  .btn-secondary {
+    @apply bg-moty-gray text-white hover:bg-gray-700 font-medium;
+  }
+  .btn-outline {
+    @apply border border-moty-red text-moty-red hover:bg-moty-red hover:text-white;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
