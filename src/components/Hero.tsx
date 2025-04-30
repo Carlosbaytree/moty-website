@@ -6,65 +6,47 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
-    <div className="relative bg-gradient-to-r from-moty-black to-moty-gray overflow-hidden">
-      {/* Overlay de imagem com efeito de opacidade */}
-      <div className="absolute inset-0 z-0 opacity-20">
-        <Image
-          src="/images/hero-background.jpg"
-          alt="Motociclista na estrada"
-          fill
-          style={{ objectFit: 'cover' }}
-          priority
-        />
+    <section className="relative h-[60vh] md:h-[80vh] flex items-center overflow-hidden">
+      {/* Background image full width */}
+      <Image
+        src="/hero-moto.jpg"
+        alt="Motociclista em estrada de montanha"
+        fill
+        style={{ objectFit: 'cover' }}
+        priority
+        className="z-0"
+      />
+      {/* Overlay escuro para contraste */}
+      <div className="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
+      <div className="relative z-20 container-custom mx-auto px-6 flex flex-col items-start justify-center h-full">
+        <motion.h1 
+          className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          Seguro Digital<br />para Motociclistas
+        </motion.h1>
+        <motion.p 
+          className="text-lg md:text-2xl text-white mb-8 max-w-xl drop-shadow"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          Proteção, assistência e comunidade. Tudo o que precisas, numa só plataforma.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+        >
+          <Link href="/simulador" className="btn-primary text-lg px-8 py-4">
+            Simular Seguro
+          </Link>
+        </motion.div>
       </div>
-      
-      <div className="container-custom mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row items-center py-16 md:py-24">
-          {/* Conteúdo do Hero */}
-          <motion.div 
-            className="w-full lg:w-1/2 text-white mb-10 lg:mb-0"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Seguro para Motociclistas, <span className="text-moty-red">Feito por Motociclistas</span>
-            </h1>
-            <p className="text-lg md:text-xl mb-8">
-              A MOTY é a primeira seguradora digital em Portugal dedicada exclusivamente a motociclistas. Proteção completa, assistência inteligente e uma comunidade ativa.
-            </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link href="/simulador" className="btn-primary text-center py-3 px-6 text-lg">
-                Simular Seguro
-              </Link>
-              <Link href="/comunidade" className="btn-outline text-center py-3 px-6 text-lg">
-                Explorar Comunidade
-              </Link>
-            </div>
-          </motion.div>
-          
-          {/* Imagem/Ilustração */}
-          <motion.div 
-            className="w-full lg:w-1/2 flex justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <div className="relative w-full max-w-md h-80 md:h-96">
-              <Image
-                src="/images/hero-motorcycle.png"
-                alt="Mota MOTY"
-                fill
-                style={{ objectFit: 'contain' }}
-                priority
-              />
-            </div>
-          </motion.div>
-        </div>
-      </div>
-      
-      {/* Wave divider */}
-      <div className="absolute bottom-0 left-0 right-0">
+      {/* Wave divider no fundo para transição suave */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full h-auto">
           <path 
             fill="#ffffff" 
@@ -73,7 +55,7 @@ const Hero = () => {
           ></path>
         </svg>
       </div>
-    </div>
+    </section>
   );
 };
 
