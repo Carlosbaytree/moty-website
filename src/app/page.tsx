@@ -162,85 +162,73 @@ export default function Home() {
         </div>
       </section>
       
-      {/* Secção de Depoimentos */}
+      {/* Depoimentos / O que dizem os nossos clientes */}
       <section className="py-16 bg-white">
         <div className="container-custom mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">O Que Dizem os Nossos Clientes</h2>
-            <p className="text-moty-gray text-lg mt-4 max-w-3xl mx-auto">
-              Descubra por que os motociclistas de todo o país confiam na MOTY para a sua proteção.
+            <p className="text-moty-gray text-lg mt-4 max-w-2xl mx-auto">
+              A confiança dos nossos clientes é o nosso maior orgulho. Veja o que dizem sobre a MOTY!
             </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Depoimento 1 */}
-            <div className="card hover:shadow-lg transition-shadow">
-              <div className="flex flex-col">
-                <div className="flex items-center mb-4">
-                  <div className="text-yellow-400 flex">
-                    {'★★★★★'.split('').map((star, i) => (
-                      <span key={i}>{star}</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-moty-gray mb-4 italic">
-                  "A MOTY revolucionou a forma como vejo os seguros de mota. Processo simples, rápido e com um atendimento excelente. Recomendo a todos os motociclistas!"
-                </p>
-                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center">
-                  <div className="w-10 h-10 bg-moty-gray rounded-full mr-3"></div>
-                  <div>
-                    <p className="font-medium">João Silva</p>
-                    <p className="text-sm text-moty-gray">Cliente desde 2024</p>
-                  </div>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0 }}
+              className="bg-moty-light-gray rounded-lg shadow-md p-8 flex flex-col items-center"
+            >
+              <div className="flex mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
+                ))}
               </div>
-            </div>
-            
+              <p className="text-moty-gray italic mb-4 text-center">“O processo foi super rápido e transparente. Recomendo a todos os motociclistas!”</p>
+              <div className="font-bold text-moty-black">João M.</div>
+              <div className="text-xs text-moty-gray">Cliente desde 2023</div>
+            </motion.div>
             {/* Depoimento 2 */}
-            <div className="card hover:shadow-lg transition-shadow">
-              <div className="flex flex-col">
-                <div className="flex items-center mb-4">
-                  <div className="text-yellow-400 flex">
-                    {'★★★★★'.split('').map((star, i) => (
-                      <span key={i}>{star}</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-moty-gray mb-4 italic">
-                  "Tive um pequeno acidente e a assistência da MOTY foi impecável. Em minutos tinha ajuda no local e todo o processo foi tratado sem complicações. Excelente serviço!"
-                </p>
-                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center">
-                  <div className="w-10 h-10 bg-moty-gray rounded-full mr-3"></div>
-                  <div>
-                    <p className="font-medium">Ana Martins</p>
-                    <p className="text-sm text-moty-gray">Cliente desde 2023</p>
-                  </div>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="bg-moty-light-gray rounded-lg shadow-md p-8 flex flex-col items-center"
+            >
+              <div className="flex mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
+                ))}
               </div>
-            </div>
-            
+              <p className="text-moty-gray italic mb-4 text-center">“Excelente atendimento e coberturas personalizadas. Senti-me sempre acompanhado!”</p>
+              <div className="font-bold text-moty-black">Maria S.</div>
+              <div className="text-xs text-moty-gray">Cliente desde 2024</div>
+            </motion.div>
             {/* Depoimento 3 */}
-            <div className="card hover:shadow-lg transition-shadow">
-              <div className="flex flex-col">
-                <div className="flex items-center mb-4">
-                  <div className="text-yellow-400 flex">
-                    {'★★★★★'.split('').map((star, i) => (
-                      <span key={i}>{star}</span>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-moty-gray mb-4 italic">
-                  "A comunidade MOTY é incrível! Já participei em vários eventos e conheci pessoas fantásticas. Além de um ótimo seguro, ganhei amigos e descobri novas rotas!"
-                </p>
-                <div className="mt-auto pt-4 border-t border-gray-100 flex items-center">
-                  <div className="w-10 h-10 bg-moty-gray rounded-full mr-3"></div>
-                  <div>
-                    <p className="font-medium">Pedro Costa</p>
-                    <p className="text-sm text-moty-gray">Cliente desde 2024</p>
-                  </div>
-                </div>
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="bg-moty-light-gray rounded-lg shadow-md p-8 flex flex-col items-center"
+            >
+              <div className="flex mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
+                ))}
               </div>
-            </div>
+              <p className="text-moty-gray italic mb-4 text-center">“A plataforma é intuitiva e a assistência 24/7 faz toda a diferença!”</p>
+              <div className="font-bold text-moty-black">Ricardo P.</div>
+              <div className="text-xs text-moty-gray">Cliente desde 2023</div>
+            </motion.div>
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/simulador" className="btn-primary text-lg px-8 py-3 inline-block">
+              Quero ser o próximo cliente satisfeito
+            </Link>
+            <div className="text-xs text-moty-gray mt-2">Junta-te à comunidade MOTY e experimenta tu mesmo!</div>
           </div>
         </div>
       </section>
