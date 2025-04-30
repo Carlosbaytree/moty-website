@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 interface FaqItemProps {
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 }
 
 const FaqItem: React.FC<FaqItemProps> = ({ question, answer }) => {

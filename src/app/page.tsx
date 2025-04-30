@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FiShield, FiMapPin, FiUsers, FiPhone } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import FaqItem from '@/components/FaqItem';
 
 export default function Home() {
   return (
@@ -229,6 +230,92 @@ export default function Home() {
               Quero ser o próximo cliente satisfeito
             </Link>
             <div className="text-xs text-moty-gray mt-2">Junta-te à comunidade MOTY e experimenta tu mesmo!</div>
+          </div>
+        </div>
+      </section>
+      
+      {/* FAQ / O que fazer em caso de acidente */}
+      <section className="py-16 bg-moty-light-gray">
+        <div className="container-custom mx-auto max-w-4xl">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">O que fazer em caso de acidente</h2>
+            <p className="text-moty-gray text-lg">Segue os passos essenciais para garantir a tua segurança e uma participação correta.</p>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <FaqItem
+              question="O que fazer em caso de acidente?"
+              answer={<>
+                <p>Mantém a calma e recolhe os seguintes dados:</p>
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                  <li>Dados dos intervenientes no acidente (nome, morada, contacto, n.º do documento de identificação e da carta de condução);</li>
+                  <li>Dados de eventuais testemunhas;</li>
+                  <li>Dados referentes às viaturas envolvidas e respetivas seguradoras (marca, matrícula, seguradora, n.º de apólice);</li>
+                  <li>Local, dia e hora do acidente, esboço do mesmo e registo fotográfico (sempre que possível), com indicação dos danos;</li>
+                  <li>Certifica-te que os outros intervenientes têm seguro válido (verifica na Carta Verde ou Certificado Provisório). Se não houver seguro válido, chama de imediato as autoridades.</li>
+                </ul>
+              </>}
+            />
+            <FaqItem
+              question="Como preencher a declaração amigável (DAAA)?"
+              answer={<>
+                <p>Preenche sempre a Declaração Amigável, exceto se for impossível. Garante que está completa e correta. Segue estas recomendações:</p>
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                  <li>Preenche toda a frente da declaração, incluindo data, hora e local do acidente.</li>
+                  <li>Faz o desenho do acidente na frente (mesmo que as autoridades digam que não é necessário, é sempre aconselhável).</li>
+                  <li>Assinala as circunstâncias do acidente para os veículos A e B.</li>
+                  <li>Indica os danos visíveis em cada veículo.</li>
+                  <li>Identifica as seguradoras e as matrículas de todos os veículos envolvidos.</li>
+                  <li>Garante que ambos os condutores assinam a declaração.</li>
+                  <li>Só deves incluir testemunhas se estas tiverem prestado declarações à polícia no local.</li>
+                  <li>Descreve o acidente detalhadamente no verso, sem omitir detalhes relevantes.</li>
+                  <li>Indica no verso se houve intervenção das autoridades.</li>
+                  <li>Identifica a oficina (nome, morada, telefone, NIF, etc.).</li>
+                  <li>Cada interveniente deve ficar com uma cópia da DAAA.</li>
+                </ul>
+                <p className="mt-2">Seguindo estes passos, o processo será mais rápido e eficiente.</p>
+              </>}
+            />
+            <FaqItem
+              question="Como participar um acidente?"
+              answer={<>
+                <p>Podes participar um acidente junto da seguradora enviando a Declaração Amigável, devidamente preenchida e assinada, através da tua área de cliente MOTY.</p>
+                <p className="mt-2">Em alternativa, podes fazer a participação diretamente na aplicação da Associação Portuguesa de Seguradores (APS), disponível em <a href="https://www.moty.pt" target="_blank" rel="noopener noreferrer" className="text-moty-red underline">MOTY.pt</a>.</p>
+              </>}
+            />
+            <FaqItem
+              question="Qual o prazo da participação?"
+              answer={<>
+                <p>A Declaração Amigável deve ser enviada ou entregue à seguradora o mais rapidamente possível, nunca ultrapassando oito dias após o acidente ou do dia em que teve conhecimento do mesmo.</p>
+              </>}
+            />
+            <FaqItem
+              question="E se o acidente for no estrangeiro?"
+              answer={<>
+                <p>Se o acidente acontecer no estrangeiro ou envolver um veículo com matrícula estrangeira, deves contactar o Gabinete Português de Carta Verde (junto da APS) para apoio:</p>
+                <ul className="list-disc pl-6 mt-2">
+                  <li>Telefone: 21 384 81 01 / 38 / 32</li>
+                  <li>Morada: Rua Rodrigo da Fonseca n.º 41, 1070-157 Lisboa</li>
+                </ul>
+              </>}
+            />
+            <FaqItem
+              question="Como reclamar como terceiro?"
+              answer={<>
+                <p>Se o condutor considerado responsável pelo acidente não participar o sinistro à seguradora, ou se não existir Convenção IDS entre as seguradoras envolvidas, a reclamação do acidente e dos danos deve ser feita diretamente à seguradora do condutor responsável.</p>
+              </>}
+            />
+            <FaqItem
+              question="Como deve ser feita essa reclamação?"
+              answer={<>
+                <p>Deves reclamar o acidente à seguradora do presumível responsável, podendo usar para isso a Declaração Amigável (DAAA). Para que a participação seja aceite, junta pelo menos um dos seguintes elementos de prova:</p>
+                <ul className="list-disc pl-6 mt-2 space-y-1">
+                  <li>Declaração Amigável (DAAA), se tiver sido preenchida e assinada pelos intervenientes;</li>
+                  <li>Auto de ocorrência, levantado na esquadra da PSP ou GNR que tomou conta da ocorrência;</li>
+                  <li>Dados das testemunhas (nome, morada e telefone);</li>
+                  <li>Se a viatura ficou danificada, podes indicar o nome, morada, telefone e NIF da oficina onde pretendes fazer a avaliação/reparação para efeitos de peritagem.</li>
+                </ul>
+              </>}
+            />
           </div>
         </div>
       </section>
