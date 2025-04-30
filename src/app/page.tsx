@@ -2,6 +2,7 @@ import Hero from '@/components/Hero';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiShield, FiMapPin, FiUsers, FiPhone } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   return (
@@ -20,7 +21,13 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Serviço 1 - Seguro Digital (Destaque) */}
-            <div className="card hover:shadow-2xl border-2 border-moty-red bg-moty-red/5 transition-shadow scale-105">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0 }}
+              className="card hover:shadow-2xl border-2 border-moty-red bg-moty-red/5 transition-shadow scale-105"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-20 p-4 rounded-full mb-4">
                   <FiShield className="h-8 w-8 text-moty-red" />
@@ -34,10 +41,16 @@ export default function Home() {
                 </Link>
                 <span className="block text-xs text-moty-gray mt-1">Rápido, grátis e sem compromisso.</span>
               </div>
-            </div>
+            </motion.div>
             
             {/* Serviço 2 - Assistência Inteligente */}
-            <div className="card hover:shadow-lg transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="card hover:shadow-lg transition-shadow"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
                   <FiMapPin className="h-8 w-8 text-moty-red" />
@@ -51,10 +64,16 @@ export default function Home() {
                 </Link>
                 <span className="block text-xs text-moty-gray mt-1">Encontre ajuda em segundos, onde estiver.</span>
               </div>
-            </div>
+            </motion.div>
             
             {/* Serviço 3 - Comunidade Ativa */}
-            <div className="card hover:shadow-lg transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="card hover:shadow-lg transition-shadow"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
                   <FiUsers className="h-8 w-8 text-moty-red" />
@@ -68,10 +87,16 @@ export default function Home() {
                 </Link>
                 <span className="block text-xs text-moty-gray mt-1">Partilhe rotas, participe em eventos e faça amigos.</span>
               </div>
-            </div>
+            </motion.div>
             
             {/* Serviço 4 - Emergência em Estrada */}
-            <div className="card hover:shadow-lg transition-shadow">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="card hover:shadow-lg transition-shadow"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="bg-moty-red bg-opacity-10 p-4 rounded-full mb-4">
                   <FiPhone className="h-8 w-8 text-moty-red" />
@@ -85,7 +110,7 @@ export default function Home() {
                 </Link>
                 <span className="block text-xs text-moty-gray mt-1">Assistência digital imediata em caso de acidente.</span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
