@@ -202,7 +202,7 @@ export default function Home() {
                   <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.9 1.4,7.6 6,11.9 4.7,18 9.9,14.8 15.1,18 13.8,11.9 18.4,7.6 12.2,6.9 "/></svg>
                 ))}
               </div>
-              <p className="text-moty-gray italic mb-4 text-center">“Excelente atendimento e coberturas personalizadas. Senti-me sempre acompanhado!”</p>
+              <p className="text-moty-gray italic mb-4 text-center">“Excelente atendimento e coberturas personalizadas. Senti-me sempre acompanhada!”</p>
               <div className="font-bold text-moty-black">Maria S.</div>
               <div className="text-xs text-moty-gray">Cliente desde 2024</div>
             </motion.div>
