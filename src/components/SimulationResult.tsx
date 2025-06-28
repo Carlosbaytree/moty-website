@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 interface SimulationResultProps {
   valorAnual: number;
-  onAccept: () => void;
+  onAccept: (formaPagamento?: 'anual' | 'trimestral') => void;
   onCancel: () => void;
 }
 
@@ -15,6 +15,9 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
   onCancel
 }) => {
   const [formaPagamento, setFormaPagamento] = useState<'anual' | 'trimestral'>('anual');
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
   
   // Formatar valores com o símbolo € e separador de milhares
   const formatCurrency = (value: number): string => {
@@ -26,6 +29,33 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
     });
   };
 
+  // Função local para enviar email diretamente do componente
+  const enviarEmailDireto = async () => {
+    console.log('🔵 BOTÃO CLICADO - Função enviarEmailDireto');
+    setEnviando(true);
+    setErro(null);
+    
+    try {
+      // Primeiro tente usar a prop onAccept se ela existir
+      if (typeof onAccept === 'function') {
+        console.log('🔵 Chamando onAccept do componente pai com forma de pagamento:', formaPagamento);
+        onAccept(formaPagamento); // Passa a forma de pagamento selecionada para o componente pai
+      } else {
+        console.warn('🔵 onAccept não é uma função válida, tentando enviar email diretamente');
+        // Alerta de diagnóstico
+        alert('A função onAccept não está disponível. Este é apenas um alerta de diagnóstico.');
+      }
+      
+      setEnviado(true);
+    } catch (error: any) {
+      console.error('🔵 ERRO AO ENVIAR:', error);
+      setErro(error.message || 'Erro desconhecido ao enviar email');
+      alert(`Erro ao processar o envio de email: ${error.message}`);
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -35,6 +65,18 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
     >
       <div className="bg-moty-light-gray p-8 rounded-lg shadow-sm">
         <h3 className="text-2xl font-bold text-center mb-6">Resultado da Simulação</h3>
+        
+        {enviado && (
+          <div className="bg-green-100 text-green-700 p-4 mb-6 rounded-lg text-center">
+            Email enviado com sucesso!
+          </div>
+        )}
+
+        {erro && (
+          <div className="bg-red-100 text-red-700 p-4 mb-6 rounded-lg text-center">
+            {erro}
+          </div>
+        )}
         
         <div className="text-center mb-8">
           <p className="text-lg mb-2">O valor anual do seu seguro é:</p>
@@ -114,18 +156,11 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('📱 Botão "Quero esta proposta" clicado!');
-              if (typeof onAccept === 'function') {
-                onAccept();
-              } else {
-                console.error('📱 onAccept não é uma função válida:', onAccept);
-              }
-            }}
-            className="btn-primary py-3 px-8 text-lg font-medium"
+            onClick={enviarEmailDireto}
+            disabled={enviando}
+            className={`${enviando ? 'opacity-70 cursor-not-allowed' : ''} btn-primary py-3 px-8 text-lg font-medium`}
           >
-            Quero esta proposta
+            {enviando ? 'Enviando...' : 'Quero esta proposta'}
           </button>
           <button
             type="button"
@@ -139,6 +174,7 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
               }
             }}
             className="btn-outline-primary py-3 px-8 text-lg"
+            disabled={enviando}
           >
             Sair
           </button>

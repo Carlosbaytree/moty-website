@@ -454,37 +454,77 @@ const SimuladorForm: React.FC = () => {
   };
 
   // Função para enviar email com a simulação
-  const handleAcceptSimulation = async () => {
-    console.log(' Função handleAcceptSimulation chamada!');
+  const handleAcceptSimulation = async (formaPagamentoSelecionada?: 'anual' | 'trimestral') => {
+    console.log('⭐⭐⭐ Função handleAcceptSimulation chamada!');
     setEmailStatus('sending');
     setIsSubmitting(true);
-
+    setEmailError('');
+    
+    // Adiciona forma de pagamento aos dados do formulário
+    const dadosCompletos = { 
+      ...formData,
+      formaPagamento: formaPagamentoSelecionada || 'anual',
+      
+      // Garantir que todos os campos obrigatórios estejam presentes
+      nome: formData.nome || '',
+      email: formData.email || '',
+      telefone: formData.telefone || '',
+      dataNascimento: formData.dataNascimento || '',
+      marca: formData.marca || '',
+      modelo: formData.modelo || '',
+      ano: formData.ano || '',
+      cilindrada: formData.cilindrada || '',
+      matricula: formData.matricula || '',
+      dataCartaConducao: formData.dataCartaConducao || '',
+      utilizacao: formData.utilizacao || 'particular',
+      tipoSeguro: formData.tipoSeguro || 'civil',
+      valor: simulationResult || 0,
+      valorAnual: simulationResult || 0
+    };
+    
+    console.log('📢 Dados completos para envio:', dadosCompletos);
+    
     try {
-      // Enviar dados do formulário para a API
-      console.log(' Enviando dados para a API:', formData);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      console.log('📢 Iniciando chamada para API...');
+      
       const response = await fetch('/api/send-proposal-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(dadosCompletos),
+        cache: 'no-store'
       });
       
-      console.log(' Resposta recebida:', response.status);
-      const result = await response.json();
-      console.log(' Resultado:', result);
+      console.log('📢 Resposta HTTP recebida! Status:', response.status);
+      
+      let result;
+      try {
+        result = await response.json();
+        console.log('📢 Dados da resposta:', result);
+      } catch (jsonError) {
+        console.warn('📢 Erro ao parsear JSON da resposta:', jsonError);
+        result = { 
+          success: response.ok, 
+          error: response.ok ? null : 'Formato de resposta inválido' 
+        };
+      }
       
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Erro ao enviar email');
       }
       
-      console.log(' Email enviado com sucesso!');
+      console.log('✅ Email enviado com sucesso!');
+      
       setEmailStatus('success');
       setShowConfirmation(true);
     } catch (error: any) {
-      console.error(' Erro ao enviar email:', error);
+      console.error('❌ ERRO AO ENVIAR EMAIL:', error);
       setEmailStatus('error');
       setEmailError(error.message || 'Erro ao enviar email. Por favor, tente novamente.');
+      alert(`Erro ao enviar email: ${error.message || 'Erro desconhecido'}. Verifique as configurações SMTP.`);
     } finally {
       setIsSubmitting(false);
     }
