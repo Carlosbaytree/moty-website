@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import FormField from '../FormField';
-import SimulationResult from '../SimulationResult'; // Importar o componente SimulationResult
+import SimulationResult from '../SimulationResult';
 import { calcularPrecoSeguro } from '@/utils/calcularPrecoSeguro';
 import { fetchVehicleDataByPlate } from '@/services/vehicleService';
 
@@ -13,7 +13,10 @@ interface FormData {
   email: string;
   telefone: string;
   dataNascimento: string;
-  dataCartaConducao: string; // Adicionado campo para data da carta de condução
+  dataCartaConducao: string;
+  morada: string;
+  codigoPostal: string;
+  localidade: string;
   matricula: string;
   marca: string;
   modelo: string;
@@ -30,30 +33,133 @@ interface FormErrors {
   [key: string]: string;
 }
 
-// Componente principal do formulário
+// Tipo para o estado do envio de email
 type EmailStatus = 'idle' | 'sending' | 'success' | 'error';
 
-// Função para formatar a data
-function formatDate(dateString: string) {
-  if (!dateString) return '';
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
-    return dateString;
-  }
-  const parts = dateString.split('-');
-  if (parts.length === 3) {
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
-  }
-  return dateString;
-}
-// Função para formatar valores monetários
-function formatCurrency(value: number): string {
-  return value.toLocaleString('pt-PT', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+const SimuladorForm: React.FC = () => {
+  // Estados para formulário e navegação
+  const [formData, setFormData] = useState<FormData>({
+    nome: '',
+    email: '',
+    telefone: '',
+    dataNascimento: '',
+    dataCartaConducao: '',
+    morada: '',
+    codigoPostal: '',
+    localidade: '',
+    matricula: '',
+    marca: '',
+    modelo: '',
+    ano: '',
+    cilindrada: '',
+    valor: '',
+    utilizacao: '',
+    tipoSeguro: 'responsabilidade-civil',
+    formaPagamento: 'anual'
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [currentStep, setCurrentStep] = useState(1);
+  const [simulationResult, setSimulationResult] = useState<number | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isLoadingVehicle, setIsLoadingVehicle] = useState(false);
+  const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<EmailStatus>('idle');
+  const [emailError, setEmailError] = useState<string>('');
+  
+  // Componente vazio por enquanto
+  return <div>Carregando...</div>;
+};
+
+export default SimuladorForm;
+
+// Tipos para os dados do formulário
+interface FormData {
+  nome: string;
+  email: string;
+  telefone: string;
+  dataNascimento: string;
+  dataCartaConducao: string;
+  morada: string;
+  codigoPostal: string;
+  localidade: string;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  ano: string;
+  cilindrada: string;
+  valor: string;
+  utilizacao: string;
+  tipoSeguro: string;
+  formaPagamento: string;
 }
+
+// Tipos para os erros de validação
+interface FormErrors {
+  [key: string]: string;
+}
+
+// Tipo para o estado do envio de email
+type EmailStatus = 'idle' | 'sending' | 'success' | 'error';
+
+const SimuladorForm: React.FC = () => {
+  // Estados para formulário e navegação
+  const [formData, setFormData] = useState<FormData>({
+    nome: '',
+    email: '',
+    telefone: '',
+    dataNascimento: '',
+    dataCartaConducao: '',
+    morada: '',
+    codigoPostal: '',
+    localidade: '',
+    matricula: '',
+    marca: '',
+    modelo: '',
+    ano: '',
+    cilindrada: '',
+    valor: '',
+    utilizacao: '',
+    tipoSeguro: 'responsabilidade-civil',
+    formaPagamento: 'anual'
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [currentStep, setCurrentStep] = useState(1);
+  const [simulationResult, setSimulationResult] = useState<any | null>(null);
+  const [showSummary, setShowSummary] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isLoadingVehicle, setIsLoadingVehicle] = useState(false);
+  const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<EmailStatus>('idle');
+  const [emailError, setEmailError] = useState<string>('');
+
+// Tipos para os dados do formulário
+interface FormData {
+  nome: string;
+  email: string;
+  telefone: string;
+  dataNascimento: string;
+  dataCartaConducao: string;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  ano: string;
+  cilindrada: string;
+  valor: string;
+  utilizacao: string;
+  tipoSeguro: string;
+  formaPagamento: string;
+}
+
+// Tipos para os erros de validação
+interface FormErrors {
+  [key: string]: string;
+}
+
+// Tipo para o estado do envio de email
+type EmailStatus = 'idle' | 'sending' | 'success' | 'error';
 
 const SimuladorForm: React.FC = () => {
   // HOOKS E FUNÇÕES AUXILIARES
@@ -83,108 +189,425 @@ const SimuladorForm: React.FC = () => {
   const [emailStatus, setEmailStatus] = useState<EmailStatus>('idle');
   const [emailError, setEmailError] = useState<string>('');
 
+
+
+  // Função para formatar a data
+  function formatDate(dateString: string) {
+    if (!dateString) return '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
+      return dateString;
+    }
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    return dateString;
+  }
+
+  // Função para formatar valores monetários
+  function formatCurrency(value: number): string {
+    return value.toLocaleString('pt-PT', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
   // Validação dos campos obrigatórios por passo
-function validateStep(step: number): boolean {
-  const newErrors: FormErrors = {};
-  if (step === 1) {
-    if (!formData.nome.trim()) newErrors.nome = 'Nome obrigatório';
-    if (!formData.email.trim() || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) newErrors.email = 'Email válido obrigatório';
-    if (!formData.telefone.trim() || !/^\d{9}$/.test(formData.telefone)) newErrors.telefone = 'Telefone (9 dígitos) obrigatório';
-    if (!formData.dataNascimento.trim() || !/^\d{2}\/\d{2}\/\d{4}$/.test(formData.dataNascimento)) newErrors.dataNascimento = 'Data de nascimento obrigatória (dd/mm/yyyy)';
-    if (!formData.dataCartaConducao.trim() || !/^\d{2}\/\d{2}\/\d{4}$/.test(formData.dataCartaConducao)) newErrors.dataCartaConducao = 'Data da carta obrigatória (dd/mm/yyyy)';
+  function validateStep(step: number): boolean {
+    const newErrors: FormErrors = {};
+    if (step === 1) {
+      if (!formData.nome.trim()) newErrors.nome = 'Nome obrigatório';
+      if (!formData.email.trim() || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) newErrors.email = 'Email válido obrigatório';
+      if (!formData.telefone.trim() || !/^\d{9}$/.test(formData.telefone)) newErrors.telefone = 'Telefone (9 dígitos) obrigatório';
+      if (!formData.dataNascimento.trim() || !/^\d{2}\/\d{2}\/\d{4}$/.test(formData.dataNascimento)) newErrors.dataNascimento = 'Data de nascimento obrigatória (dd/mm/yyyy)';
+      if (!formData.dataCartaConducao.trim() || !/^\d{2}\/\d{2}\/\d{4}$/.test(formData.dataCartaConducao)) newErrors.dataCartaConducao = 'Data da carta obrigatória (dd/mm/yyyy)';
+    }
+    if (step === 2) {
+      if (!formData.matricula.trim() || !/^\d{2}-[A-Z]{2}-\d{2}$/.test(formData.matricula)) newErrors.matricula = 'Matrícula obrigatória (11-AA-22)';
+      if (!formData.marca.trim()) newErrors.marca = 'Marca obrigatória';
+      if (!formData.modelo.trim()) newErrors.modelo = 'Modelo obrigatório';
+      if (!formData.ano.trim() || !/^\d{4}$/.test(formData.ano)) newErrors.ano = 'Ano obrigatório (formato yyyy)';
+      if (!formData.cilindrada.trim()) newErrors.cilindrada = 'Cilindrada obrigatória';
+      if (!formData.valor.trim() || isNaN(Number(formData.valor))) newErrors.valor = 'Valor obrigatório';
+      if (!formData.utilizacao.trim()) newErrors.utilizacao = 'Escolha a utilização';
+    }
+    if (step === 3) {
+      if (!formData.tipoSeguro.trim()) newErrors.tipoSeguro = 'Tipo de seguro obrigatório';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   }
-  if (step === 2) {
-    if (!formData.matricula.trim() || !/^\d{2}-[A-Z]{2}-\d{2}$/.test(formData.matricula)) newErrors.matricula = 'Matrícula obrigatória (11-AA-22)';
-    if (!formData.marca.trim()) newErrors.marca = 'Marca obrigatória';
-    if (!formData.modelo.trim()) newErrors.modelo = 'Modelo obrigatório';
-    if (!formData.ano.trim() || !/^\d{4}$/.test(formData.ano)) newErrors.ano = 'Ano obrigatório (formato yyyy)';
-    if (!formData.cilindrada.trim()) newErrors.cilindrada = 'Cilindrada obrigatória';
-    if (!formData.valor.trim() || isNaN(Number(formData.valor))) newErrors.valor = 'Valor obrigatório';
-    if (!formData.utilizacao.trim()) newErrors.utilizacao = 'Escolha a utilização';
-  }
-  if (step === 3) {
-    if (!formData.tipoSeguro.trim()) newErrors.tipoSeguro = 'Tipo de seguro obrigatório';
-  }
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-}
 
-// ...demais funções auxiliares como handleAcceptProposal, handleChange, etc...
-
-    return (
+  return (
     <div className="max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold mb-6 text-center">Simulador de Seguro</h2>
-      
-      {!showSummary && !showConfirmation && (
-        <div className="mb-8">
-          <div className="flex justify-between mb-4">
-            {[1, 2, 3, 4].map((step) => (
+      <div className="mb-8">
+        <div className="flex justify-between mb-4">
+          {[1, 2, 3, 4].map((step) => (
+            <div
+              key={step}
+              className={`flex-1 text-center relative ${
+                step < currentStep
+                  ? 'text-moty-red'
+                  : step === currentStep
+                  ? 'text-moty-red'
+                  : 'text-gray-400'
+              }`}
+            >
               <div
-                key={step}
-                className={`flex-1 text-center relative ${
-                  step < currentStep
-                    ? 'text-moty-red'
-                    : step === currentStep
-                    ? 'text-moty-red'
-                    : 'text-gray-400'
+                className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center mb-2 ${
+                  step <= currentStep ? 'bg-moty-red text-white' : 'bg-gray-200 text-gray-500'
                 }`}
               >
-                <div
-                  className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center mb-2 ${
-                    step <= currentStep ? 'bg-moty-red text-white' : 'bg-gray-200 text-gray-500'
-                  }`}
-                >
-                  {step < currentStep ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    step
-                  )}
-                </div>
-                <div className="text-sm font-medium">
-                  {step === 1 && 'Dados Pessoais'}
-                  {step === 2 && 'Dados do Veículo'}
-                  {step === 3 && 'Tipo de Seguro'}
-                  {step === 4 && 'Resumo'}
-                </div>
-                {step < 3 && (
-                  <div className="hidden sm:block absolute top-4 -right-1/2 w-full h-0.5 bg-gray-200 z-0">
-                    <div
-                      className={`h-full bg-moty-red transition-all duration-300 ${
-                        step < currentStep ? 'w-full' : 'w-0'
-                      }`}
-                    ></div>
-                  </div>
+                {step < currentStep ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  step
                 )}
               </div>
-            ))}
-          </div>
+              <div className="text-sm font-medium">
+                {step === 1 && 'Dados Pessoais'}
+                {step === 2 && 'Dados do Veículo'}
+                {step === 3 && 'Tipo de Seguro'}
+                {step === 4 && 'Resumo'}
+              </div>
+              {step < 3 && (
+                <div className="hidden sm:block absolute top-4 -right-1/2 w-full h-0.5 bg-gray-200 z-0">
+                  <div
+                    className={`h-full bg-moty-red transition-all duration-300 ${
+                      step < currentStep ? 'w-full' : 'w-0'
+                    }`}
+                  ></div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      )}
-      
+      </div>
+      {/* Passos do formulário */}
       {!showSummary && !showConfirmation && (
         <form onSubmit={(e) => {
           e.preventDefault();
           if (validateStep(currentStep)) {
-            // Calcular o preço do seguro
             const resultado = calcularPrecoSeguro(formData);
+            setSimulationResult(resultado);
+            if (currentStep === 4) setShowSummary(true);
           }
         }} className="space-y-6">
-          {/* Passo 1: Dados Pessoais */}
+          {/* Passo 1 */}
           {currentStep === 1 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-4"
-            >
-              <h3 className="text-xl font-semibold mb-4">Dados Pessoais</h3>
-              
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} className="space-y-4">
               <FormField
                 id="nome"
                 label="Nome Completo"
                 type="text"
+                value={formData.nome}
+                onChange={e => setFormData({ ...formData, nome: e.target.value })}
+                required
+                error={errors.nome}
+                placeholder="Insira o seu nome completo"
+              />
+              <FormField
+                id="email"
+                label="Email"
+                type="email"
+                value={formData.email}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                required
+                error={errors.email}
+                placeholder="Insira o seu email"
+              />
+              <FormField
+                id="telefone"
+                label="Telefone"
+                type="tel"
+                value={formData.telefone}
+                onChange={e => setFormData({ ...formData, telefone: e.target.value.replace(/[^0-9]/g, '').slice(0,9) })}
+                required
+                error={errors.telefone}
+                placeholder="Insira o seu telefone (9 dígitos)"
+              />
+              <FormField
+                id="dataNascimento"
+                label="Data de Nascimento"
+                type="text"
+                value={formData.dataNascimento}
+                onChange={e => {
+                  let val = e.target.value.replace(/[^0-9]/g, '');
+                  if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
+                  if (val.length > 5) val = val.slice(0,5) + '/' + val.slice(5);
+                  if (val.length > 10) val = val.slice(0,10);
+                  setFormData({ ...formData, dataNascimento: val });
+                }}
+                required
+                error={errors.dataNascimento}
+                placeholder="dd/mm/aaaa"
+              />
+              <FormField
+                id="dataCartaConducao"
+                label="Data da Carta de Condução"
+                type="text"
+                value={formData.dataCartaConducao}
+                onChange={e => {
+                  let val = e.target.value.replace(/[^0-9]/g, '');
+                  if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
+                  if (val.length > 5) val = val.slice(0,5) + '/' + val.slice(5);
+                  if (val.length > 10) val = val.slice(0,10);
+                  setFormData({ ...formData, dataCartaConducao: val });
+                }}
+                required
+                error={errors.dataCartaConducao}
+                placeholder="dd/mm/aaaa"
+              />
+              <button type="button" className="btn-primary py-2 px-6 float-right" onClick={() => {
+                if (validateStep(1)) setCurrentStep(2);
+              }}>Continuar</button>
+            </motion.div>
+          )}
+          {/* Passo 2 */}
+          {currentStep === 2 && (
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} className="space-y-4">
+              <FormField
+                id="matricula"
+                label="Matrícula"
+                type="text"
+                value={formData.matricula}
+                onChange={e => {
+                  let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                  if (val.length > 2 && val[2] !== '-') val = val.slice(0,2) + '-' + val.slice(2);
+                  if (val.length > 5 && val[5] !== '-') val = val.slice(0,5) + '-' + val.slice(5);
+                  if (val.length > 9) val = val.slice(0,9);
+                  setFormData({ ...formData, matricula: val });
+                }}
+                onBlur={async () => {
+                  const match = formData.matricula.match(/^\d{2}-[A-Z]{2}-\d{2}$/);
+                  if (match) {
+                    setIsLoadingVehicle(true);
+                    const data = await fetchVehicleDataByPlate(formData.matricula);
+                    if (data) {
+                      setFormData(fd => ({
+                        ...fd,
+                        marca: data.marca || '',
+                        modelo: data.modelo || '',
+                        ano: data.ano || '',
+                        cilindrada: data.cilindrada || ''
+                      }));
+                    }
+                    setIsLoadingVehicle(false);
+                  }
+                }}
+                required
+                error={errors.matricula}
+                placeholder="11-AA-22"
+                disabled={isLoadingVehicle}
+              />
+              <FormField id="marca" label="Marca" type="text" value={formData.marca} onChange={e => setFormData({ ...formData, marca: e.target.value })} required error={errors.marca} placeholder="Marca da mota" disabled={isLoadingVehicle} />
+              <FormField id="modelo" label="Modelo" type="text" value={formData.modelo} onChange={e => setFormData({ ...formData, modelo: e.target.value })} required error={errors.modelo} placeholder="Modelo da mota" disabled={isLoadingVehicle} />
+              <FormField id="ano" label="Ano" type="text" value={formData.ano} onChange={e => setFormData({ ...formData, ano: e.target.value })} required error={errors.ano} placeholder="Ano da mota" disabled={isLoadingVehicle} />
+              <FormField id="cilindrada" label="Cilindrada (cc)" type="text" value={formData.cilindrada} onChange={e => setFormData({ ...formData, cilindrada: e.target.value })} required error={errors.cilindrada} placeholder="Cilindrada em cc" disabled={isLoadingVehicle} />
+              <FormField id="valor" label="Valor Estimado (€)" type="text" value={formData.valor} onChange={e => setFormData({ ...formData, valor: e.target.value })} placeholder="Valor estimado da mota" />
+              <FormField id="utilizacao" label="Utilização" type="select" value={formData.utilizacao} onChange={e => setFormData({ ...formData, utilizacao: e.target.value })} required error={errors.utilizacao} placeholder="Selecione a utilização da mota" options={[
+                { value: '', label: 'Selecione...' },
+                { value: 'particular', label: 'Particular - Para uso pessoal e lazer' },
+                { value: 'pendular', label: 'Pendular - Para deslocações diárias casa-trabalho' },
+                { value: 'profissional', label: 'Profissional - Para uso profissional (entregas, etc.)' }
+              ]} />
+              <div className="flex justify-between mt-6">
+                <button type="button" className="btn-outline-primary py-2 px-6" onClick={() => setCurrentStep(1)}>Voltar</button>
+                <button type="button" className="btn-primary py-2 px-6" onClick={() => { if (validateStep(2)) setCurrentStep(3); }}>Continuar</button>
+              </div>
+            </motion.div>
+          )}
+          {/* Passo 3 */}
+          {currentStep === 3 && (
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} className="space-y-4">
+              <FormField id="tipoSeguro" label="Tipo de Seguro" type="select" value={formData.tipoSeguro} onChange={e => setFormData({ ...formData, tipoSeguro: e.target.value })} required error={errors.tipoSeguro} placeholder="Escolha o tipo de seguro" options={[
+                { value: '', label: 'Selecione...' },
+                { value: 'responsabilidade-civil', label: 'Responsabilidade Civil' },
+                { value: 'danos-proprios', label: 'Danos Próprios (Todos os Riscos)' }
+              ]} />
+              <div className="flex justify-between mt-6">
+                <button type="button" className="btn-outline-primary py-2 px-6" onClick={() => setCurrentStep(2)}>Voltar</button>
+                <button type="button" className="btn-primary py-2 px-6" onClick={() => { if (validateStep(3)) setCurrentStep(4); }}>Continuar</button>
+              </div>
+            </motion.div>
+          )}
+          {/* Passo 4 - Resumo */}
+          {currentStep === 4 && (
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }} className="space-y-4">
+              {/* Resumo dos dados e botão para simular */}
+              <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                  <div>
+                    <h4 className="text-lg font-semibold text-moty-red mb-4">Dados Pessoais</h4>
+                    <p><b>Nome:</b> {formData.nome}</p>
+                    <p><b>Email:</b> {formData.email}</p>
+                    <p><b>Telefone:</b> {formData.telefone}</p>
+                    <p><b>Data de Nascimento:</b> {formData.dataNascimento}</p>
+                    <p><b>Data Carta:</b> {formData.dataCartaConducao}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-moty-red mb-4">Dados do Veículo</h4>
+                    <p><b>Matrícula:</b> {formData.matricula}</p>
+                    <p><b>Marca:</b> {formData.marca}</p>
+                    <p><b>Modelo:</b> {formData.modelo}</p>
+                    <p><b>Ano:</b> {formData.ano}</p>
+                    <p><b>Cilindrada:</b> {formData.cilindrada}</p>
+                    <p><b>Valor:</b> {formData.valor}</p>
+                    <p><b>Utilização:</b> {formData.utilizacao}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-between mt-8">
+                <button type="button" className="btn-outline-primary py-2 px-6" onClick={() => setCurrentStep(3)}>Voltar</button>
+                <button type="submit" className="btn-primary py-2 px-6">Simular</button>
+              </div>
+            </motion.div>
+          )}
+        </form>
+      )}
+      {/* Resultado da Simulação */}
+      {showSummary && simulationResult && (
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="space-y-6">
+          <div className="bg-white p-8 rounded-lg border border-gray-200 text-center">
+            <h3 className="text-xl font-bold mb-4">Resultado da Simulação</h3>
+            <p className="text-2xl font-bold text-moty-red mb-4">{formatCurrency(simulationResult.valorAnual)}</p>
+            <p className="mb-2">Forma de pagamento:</p>
+            <select value={formData.formaPagamento} onChange={e => setFormData({ ...formData, formaPagamento: e.target.value })} className="border rounded p-2 mb-4">
+              <option value="anual">Anual</option>
+              <option value="trimestral">Trimestral (+15%)</option>
+            </select>
+            <div className="flex justify-between mt-8">
+              <button type="button" className="btn-outline-primary py-2 px-6" onClick={() => setShowSummary(false)}>Voltar</button>
+              <button type="button" className="btn-primary py-2 px-6" onClick={() => setShowConfirmation(true)}>Avançar</button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+      {/* Confirmação de Envio */}
+      {showConfirmation && (
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="space-y-6 text-center">
+          <div className="bg-green-50 p-8 rounded-lg">
+            <h3 className="text-xl font-bold mb-2">Proposta Enviada com Sucesso!</h3>
+            <p className="text-gray-600 mb-6">Enviámos um email de confirmação para <strong>{formData.email}</strong> com os detalhes da sua proposta.</p>
+            <button type="button" className="btn-primary py-2 px-6" onClick={() => {
+              setSimulationResult(null);
+              setShowSummary(false);
+              setShowConfirmation(false);
+              setCurrentStep(1);
+              setFormData({
+                nome: '',
+                email: '',
+                telefone: '',
+                dataNascimento: '',
+                dataCartaConducao: '',
+                matricula: '',
+                marca: '',
+                modelo: '',
+                ano: '',
+                cilindrada: '',
+                valor: '',
+                utilizacao: '',
+                tipoSeguro: 'responsabilidade-civil',
+                formaPagamento: 'anual'
+              });
+              setEmailStatus('idle');
+              setEmailError('');
+            }}>Voltar ao Início</button>
+          </div>
+        </motion.div>
+      )}
+      <p className="text-sm text-moty-gray text-center mt-4">
+        Ao submeter este formulário, concorda com a nossa{' '}
+        <a href="/politica-privacidade" className="text-moty-red hover:underline">Política de Privacidade</a>
+      </p>
+      
+      {showSummary && (
+        <SimulationResult
+          valorAnual={simulationResult?.valorAnual || 0}
+          onAccept={() => setShowConfirmation(true)}
+          onCancel={() => setShowSummary(false)}
+        />
+      )}
+      
+      {showConfirmation && emailStatus === 'sending' && (
+        <motion.div className="text-center py-12">
+          <p className="text-lg text-moty-gray">A enviar proposta...</p>
+        </motion.div>
+      )}
+      
+      {showConfirmation && emailStatus === 'error' && (
+        <motion.div className="space-y-6 text-center">
+          <div className="bg-red-50 p-8 rounded-lg">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mb-2">Erro ao Enviar Email</h3>
+            <p className="text-gray-600 mb-6">{emailError || 'Ocorreu um erro ao enviar o email de confirmação. Por favor, tente novamente.'}</p>
+            <button type="button" onClick={() => { setEmailStatus('idle'); setEmailError(''); }} className="btn-primary py-2 px-6">Tentar Novamente</button>
+          </div>
+        </motion.div>
+      )}
+      
+      {showConfirmation && emailStatus === 'success' && (
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="space-y-6 text-center">
+          <div className="bg-green-50 p-8 rounded-lg">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mb-2">Proposta Enviada com Sucesso!</h3>
+            <p className="text-gray-600 mb-6">
+              Enviámos um email de confirmação para <strong>{formData.email}</strong> com os detalhes da sua proposta.<br />
+              A nossa equipa entrará em contacto consigo em breve para finalizar o processo.
+            </p>
+            <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6 text-left">
+              <h4 className="font-semibold mb-2">Resumo da Proposta:</h4>
+              <ul className="space-y-1 text-sm">
+                <li><span className="font-medium">Nome:</span> {formData.nome}</li>
+                <li><span className="font-medium">Matrícula:</span> {formData.matricula}</li>
+                <li><span className="font-medium">Mota:</span> {formData.marca} {formData.modelo} ({formData.ano})</li>
+                <li><span className="font-medium">Tipo de Seguro:</span> {formData.tipoSeguro === 'responsabilidade-civil' ? 'Responsabilidade Civil' : 'Danos Próprios'}</li>
+                <li><span className="font-medium">Valor Anual:</span> {formatCurrency(simulationResult?.valorAnual || 0)}</li>
+                <li><span className="font-medium">Forma de Pagamento:</span> {formData.formaPagamento === 'anual' ? 'Anual' : 'Trimestral'}</li>
+              </ul>
+            </div>
+            <button type="button" onClick={() => {
+              setSimulationResult(null);
+              setShowSummary(false);
+              setShowConfirmation(false);
+              setCurrentStep(1);
+              setFormData({
+                nome: '',
+                email: '',
+                telefone: '',
+                dataNascimento: '',
+                dataCartaConducao: '',
+                matricula: '',
+                marca: '',
+                modelo: '',
+                ano: '',
+                cilindrada: '',
+                valor: '',
+                utilizacao: '',
+                tipoSeguro: 'responsabilidade-civil',
+                formaPagamento: 'anual'
+              });
+              setEmailStatus('idle');
+              setEmailError('');
+            }} className="btn-primary py-2 px-6">Voltar ao Início</button>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
                 value={formData.nome}
                 onChange={(e) => {
                   const { name, value } = e.target;
@@ -234,60 +657,44 @@ function validateStep(step: number): boolean {
               
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label htmlFor="dataNascimento" className="block text-sm font-medium mb-1 text-gray-700">
-                    Data de Nascimento <span className="text-moty-red">*</span>
-                  </label>
-                  <input
-                    id="dataNascimento"
-                    name="dataNascimento"
-                    type="text"
-                    placeholder="dd/mm/yyyy"
-                    value={formData.dataNascimento}
-                    onChange={(e) => {
-                      const { name, value } = e.target;
-                      setFormData(prev => ({
-                        ...prev,
-                        [name]: value
-                      }));
-                    }}
-                    className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-moty-red/50 ${
-                      errors.dataNascimento ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                    }`}
-                  />
-                  {errors.dataNascimento && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.dataNascimento}
-                    </p>
-                  )}
-                </div>
+  <FormField
+    id="dataNascimento"
+    label="Data de Nascimento"
+    type="text"
+    value={formData.dataNascimento}
+    onChange={e => {
+      let val = e.target.value.replace(/[^0-9]/g, '');
+      if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
+      if (val.length > 5) val = val.slice(0,5) + '/' + val.slice(5);
+      if (val.length > 10) val = val.slice(0,10);
+      setFormData({ ...formData, dataNascimento: val });
+    }}
+    onBlur={() => {}}
+    error={errors.dataNascimento}
+    placeholder="dd/mm/aaaa"
+    required
+  />
+</div>
                 
                 <div>
-                  <label htmlFor="dataCartaConducao" className="block text-sm font-medium mb-1 text-gray-700">
-                    Data da Carta de Condução <span className="text-moty-red">*</span>
-                  </label>
-                  <input
-                    id="dataCartaConducao"
-                    name="dataCartaConducao"
-                    type="text"
-                    placeholder="dd/mm/yyyy"
-                    value={formData.dataCartaConducao}
-                    onChange={(e) => {
-                      const { name, value } = e.target;
-                      setFormData(prev => ({
-                        ...prev,
-                        [name]: value
-                      }));
-                    }}
-                    className={`w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-moty-red/50 ${
-                      errors.dataCartaConducao ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                    }`}
-                  />
-                  {errors.dataCartaConducao && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.dataCartaConducao}
-                    </p>
-                  )}
-                </div>
+  <FormField
+    id="dataCartaConducao"
+    label="Data da Carta de Condução"
+    type="text"
+    value={formData.dataCartaConducao}
+    onChange={e => {
+      let val = e.target.value.replace(/[^0-9]/g, '');
+      if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
+      if (val.length > 5) val = val.slice(0,5) + '/' + val.slice(5);
+      if (val.length > 10) val = val.slice(0,10);
+      setFormData({ ...formData, dataCartaConducao: val });
+    }}
+    onBlur={() => {}}
+    error={errors.dataCartaConducao}
+    placeholder="dd/mm/aaaa"
+    required
+  />
+</div>
               </div>
               
               <div className="flex justify-end mt-6">
@@ -337,16 +744,34 @@ function validateStep(step: number): boolean {
                 label="Matrícula"
                 type="text"
                 value={formData.matricula}
-                onChange={(e) => {
-                  const { name, value } = e.target;
-                  setFormData(prev => ({
-                    ...prev,
-                    [name]: value
-                  }));
+                onChange={e => {
+                  let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                  if (val.length > 2 && val[2] !== '-') val = val.slice(0,2) + '-' + val.slice(2);
+                  if (val.length > 5 && val[5] !== '-') val = val.slice(0,5) + '-' + val.slice(5);
+                  if (val.length > 9) val = val.slice(0,9);
+                  setFormData({ ...formData, matricula: val });
                 }}
-                required
+                onBlur={async () => {
+                  const match = formData.matricula.match(/^\d{2}-[A-Z]{2}-\d{2}$/);
+                  if (match) {
+                    setIsLoadingVehicle(true);
+                    const data = await fetchVehicleDataByPlate(formData.matricula);
+                    if (data) {
+                      setFormData(fd => ({
+                        ...fd,
+                        marca: data.marca || '',
+                        modelo: data.modelo || '',
+                        ano: data.ano || '',
+                        cilindrada: data.cilindrada || ''
+                      }));
+                    }
+                    setIsLoadingVehicle(false);
+                  }
+                }}
                 error={errors.matricula}
-                placeholder="XX-XX-XX"
+                placeholder="11-AA-22"
+                required
+                disabled={isLoadingVehicle}
               />
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -737,8 +1162,22 @@ function validateStep(step: number): boolean {
                   Voltar
                 </button>
                 <button
-                  type="submit"
+                  type="button"
                   className="btn-primary py-2 px-6"
+                  onClick={async () => {
+                    if (!validateStep(currentStep)) return;
+                    setIsSubmitting(true);
+                    try {
+                      const result = await calcularPrecoSeguro(formData);
+                      setSimulationResult(result);
+                      setShowSummary(true);
+                    } catch (err) {
+                      setErrors({ ...errors, geral: 'Erro ao calcular o seguro.' });
+                    } finally {
+                      setIsSubmitting(false);
+                    }
+                  }}
+                  disabled={isSubmitting}
                 >
                   Simular
                 </button>
@@ -746,7 +1185,8 @@ function validateStep(step: number): boolean {
             </motion.div>
           )}
         </form>
-      )}
+
+// ... (rest of the code remains the same)
       
       {/* Resultado da Simulação */}
       {showSummary && simulationResult && (
@@ -892,4 +1332,5 @@ function validateStep(step: number): boolean {
     </div>
   );
 };
+
 export default SimuladorForm;

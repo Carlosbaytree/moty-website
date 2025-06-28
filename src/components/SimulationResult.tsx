@@ -114,14 +114,30 @@ const SimulationResult: React.FC<SimulationResultProps> = ({
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
           <button
             type="button"
-            onClick={onAccept}
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('📱 Botão "Quero esta proposta" clicado!');
+              if (typeof onAccept === 'function') {
+                onAccept();
+              } else {
+                console.error('📱 onAccept não é uma função válida:', onAccept);
+              }
+            }}
             className="btn-primary py-3 px-8 text-lg font-medium"
           >
             Quero esta proposta
           </button>
           <button
             type="button"
-            onClick={onCancel}
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('📱 Botão "Sair" clicado!');
+              if (typeof onCancel === 'function') {
+                onCancel();
+              } else {
+                console.error('📱 onCancel não é uma função válida:', onCancel);
+              }
+            }}
             className="btn-outline-primary py-3 px-8 text-lg"
           >
             Sair

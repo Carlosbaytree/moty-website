@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import SimuladorForm from '@/components/simulador/SimuladorForm';
+import SimuladorForm from '@/components/simulador/SimuladorFormNew';
 import FaqItem from '@/components/FaqItem';
 
 export default function SimuladorPage() {
